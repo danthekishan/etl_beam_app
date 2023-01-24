@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "etl_beam_app"
+version = "0.0.1"
+authors = [{ name = "Daniel Kishan", email = "daniel.abhishek002@gmail.com" }]
+description = "Helper app for building ETL pipeline"
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = ["beam", "python", "etl"]
+classifiers = [
+  "Framework :: Apache Beam",
+  "Programming Language :: Python :: 3",
+]
+dependencies = ["pydantic"]
+
+[tool.setuptools.package-dir]
+mypkg = "etl_beam_app"
