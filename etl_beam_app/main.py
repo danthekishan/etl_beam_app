@@ -1,30 +1,22 @@
-import json
-from pprint import pprint
-
-from etl_beam_app.etl.extract import ETL
-from etl_beam_app.models.person import Person, JsonError
-
-
-with open("etl_beam_app/data/input_data.json") as file:
-    data = json.load(file)
-
-people_datapipeline = ETL(Person, JsonError)
-people_datapipeline.extract_bulk_data(source="input_test", data=data)
-print(people_datapipeline.extracted_data)
-print()
-print(people_datapipeline.extracted_errors)
-
-# people = [
-#     ExtractResponse(
-#         data_model=Person(**d, source="test_source"), error_model=None
-#     ).dict()
-#     for d in data
-# ]
-# print(people)  # schema of the model
+# from etl_beam_app.etl.person_etl import person_et
+#
+#
+# person_et.process_data()
+# df = person_et.data_to_df()
+# print(df)
 """
 Plan
 
-1. process data -> output data and error datasets :: =DONE=
+1. process data output data and error datasets -> ::DONE:: | test -> done
+* flatten nested data -> ::DONE:: | test -> done
+* build connectors
+* develop for beam ====
+    * model validator -> DONE
+    * data extracting (connector) -> DONE
+    * data loading (template) -> PENDING
+* setup file instead of pyproject.toml
+
+
 2. push data to data warehouse and cloud storage
 3. push errors to cloud storage
 4. develop pipeline to process error storage

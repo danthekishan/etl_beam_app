@@ -6,16 +6,36 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
-class BaseDataModel(BaseModel):
+class DataModel(BaseModel):
+    """
+    Data Model class that handles the nested schema and
+    outputs a flattened dict obj, only when the nested
+    model has `Field(flatten=True)` when defining the model
+    """
+
+    def _iter(self, to_dict: bool = False, *args, **kwargs):
+        for dict_key, value in super()._iter(to_dict, *args, **kwargs):
+            if to_dict and self.__fields__[dict_key].field_info.extra.get(
+                "flatten", False
+            ):
+                assert isinstance(value, dict)
+                yield from (
+                    (f"{dict_key}_{key}", value) for key, value in value.items()
+                )
+            else:
+                yield dict_key, value
+
+
+class BaseDataModel(DataModel):
     """
     Base data model class with essential fields
     """
 
     source: str
-    imported_at: datetime = datetime.utcnow()
+    imported_at: datetime
 
 
-class ChildDataModel(BaseModel):
+class ChildDataModel(DataModel):
     """
     Child data model class without any data model
     """
@@ -31,10 +51,4 @@ class ErrorModel(BaseModel):
     exception: str
     message: str
     raw_data: str
-
-
-# if __name__ == "__main__":
-#     data = DataModel(source="test_source")
-#     error = ErrorModel(error_type=Errors.invalid_dt, message="test_error")
-#
-#     print(ExtractResponse(data_model=data, error_model=None))
+    error_at: datetime

@@ -8,6 +8,7 @@ data model to store person data
 """
 
 from etl_beam_app.base.base_model import BaseDataModel, ChildDataModel, ErrorModel
+from pydantic import Field
 
 
 class Address(ChildDataModel):
@@ -19,8 +20,9 @@ class Address(ChildDataModel):
 class Person(BaseDataModel):
     first_name: str
     last_name: str | None
-    address: Address | None
+    address: Address | None = Field(flatten=True)
     favourite_numbers: list[int]
+    filename: str
 
 
 class JsonError(ErrorModel):

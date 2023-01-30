@@ -14,7 +14,20 @@ classifiers = [
   "Framework :: Apache Beam",
   "Programming Language :: Python :: 3",
 ]
-dependencies = ["pydantic"]
+dependencies = [
+  "pydantic",
+  "duckdb",
+  "pytest",
+  "pandas",
+  "pyarrow",
+  "apache-beam",
+]
 
 [tool.setuptools.package-dir]
 mypkg = "etl_beam_app"
+
+[tool.pyright]
+include = ["etl_beam_app", "tests"]
+exclude = ["docs", "etl_beam_app.egg-info"]
+venv = "venv"
+venvPath = ""
