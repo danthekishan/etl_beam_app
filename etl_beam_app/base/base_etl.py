@@ -1,6 +1,6 @@
 from datetime import datetime
 import json
-from typing import Generic
+from typing import Generic, Optional
 from typing import TypeVar
 
 from pydantic import validator
@@ -19,8 +19,8 @@ class BaseExtractResponse(GenericModel, Generic[_DataModel, _ErrorModel]):
     Generic model that handles the extracted data or errors, if occured
     """
 
-    data_model: BaseDataModel | None
-    error_model: ErrorModel | None
+    data_model: Optional[BaseDataModel]
+    error_model: Optional[ErrorModel]
 
     @validator("error_model", always=True)
     def check_consistency(cls, v, values):
@@ -44,14 +44,16 @@ class BaseET:
         data_model,
         error_model,
         source: str,
-        transform_class: BaseTransform | None = None,
+        transform_class: Optional[BaseTransform] = None,
         extract_response=BaseExtractResponse,
     ):
         self.data_model = data_model
         self.error_model = error_model
         self.source = source
         self.imported_at = datetime.utcnow()
-        self.transform_class = transform_class
+        self.transform_class = (
+            transform_class() if transform_class is not None else None  # type: ignore
+        )
         self.extract_response = extract_response
 
     def validate_data(self, data: dict) -> tuple[dict, dict]:
@@ -100,6 +102,6 @@ class BaseET:
         data, error = self.validate_data(data)
 
         if self.transform_class is not None:
-            data = self.transform_class.transform(data)
+            data = self.transform_class.transform(data_line=data)
 
         return data, error

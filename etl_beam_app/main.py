@@ -6,6 +6,17 @@
 # print(df)
 """
 Plan
+#####
+Create a new support model that would have,
+for api -->
+    * api endpoint
+    * api endpoint parameters
+    * bigquery schema
+create a switcher, that can switch between,
+    * data, error model
+    * support model
+and should be PTransform
+#####
 
 1. process data output data and error datasets -> ::DONE:: | test -> done
 * flatten nested data -> ::DONE:: | test -> done

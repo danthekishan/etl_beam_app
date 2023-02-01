@@ -1,0 +1,20 @@
+{
+  "name": "Sample dataflow",
+  "description": "Simple data pipeline",
+  "parameters": [
+    {
+      "name": "input_file",
+      "label": "Input file name",
+      "helpText": "File name of the source"
+    },
+    {
+      "name": "output_table",
+      "label": "BigQuery output table name.",
+      "helpText": "Name of the BigQuery output table name.",
+      "isOptional": true,
+      "regexes": [
+        "([^:]+:)?[^.]+[.].+"
+      ]
+    }
+  ]
+}

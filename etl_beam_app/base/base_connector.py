@@ -11,10 +11,10 @@ class BaseConnector(DoFn):
 
     def __init__(
         self,
-        data_model: BaseDataModel,
-        error_model: ErrorModel,
-        source: str,
-        transform_class: BaseTransform | None = None,
+        data_model,
+        error_model,
+        source,
+        transform_class,
         et_class=BaseET,
         extract_response=BaseExtractResponse,
     ):

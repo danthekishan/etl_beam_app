@@ -1,0 +1,11 @@
+.git
+.pytest_cache
+docs
+data
+.env
+etl_beam_app.egg-info
+build
+*/__pycache__
+tests
+venv
+README.md

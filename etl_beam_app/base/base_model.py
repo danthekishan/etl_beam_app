@@ -3,7 +3,10 @@ base_model holds pydantic classes and support enum classes
 that can be extended to create customized classes.
 """
 from datetime import datetime
+from typing import Optional
+from apache_beam.io.gcp.internal.clients import bigquery
 from pydantic import BaseModel
+from google.cloud.bigquery import SchemaField
 
 
 class DataModel(BaseModel):
@@ -52,3 +55,52 @@ class ErrorModel(BaseModel):
     message: str
     raw_data: str
     error_at: datetime
+
+
+class JsonError(ErrorModel):
+    pass
+
+
+class GCPModel:
+    """
+    This class stores the additional information
+    about the gcp and related configurations
+    """
+
+    def __init__(
+        self,
+        project_id: str,
+        dataset_id: str,
+        table_id: str,
+        table_schema: list[SchemaField],
+        additional_bq_parameters: Optional[dict] = {},
+    ):
+        """
+        __init__
+
+        args:
+            project_id - gcp project id
+            dataset_id - bigquery dataset
+            table_id - bigquery table
+            table_schema - list of dict/schema
+                ex:
+                    [{'name': 'source', 'type': 'STRING', 'mode': 'NULLABLE'},
+                    {'name': 'quote', 'type': 'STRING', 'mode': 'REQUIRED'}]
+            additional_bq_parameters - bigquery additional params
+                ex:
+                    {'timePartitioning': {'type': 'HOUR'}}
+            write_disposition - bigquery writing options(default=append)
+            create_disposition - bigquery create options(default=create)
+        """
+        self.project_id = project_id
+        self.dataset_id = dataset_id
+        self.table_id = table_id
+        self.table_schema = {
+            "fields": [record.to_api_repr() for record in table_schema]
+        }
+        self.additional_bq_parameters = (
+            additional_bq_parameters if additional_bq_parameters == {} else None
+        )
+        self.table_spec = bigquery.TableReference(
+            projectId=self.project_id, datasetId=self.dataset_id, tableId=self.table_id
+        )

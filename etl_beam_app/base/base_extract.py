@@ -2,6 +2,7 @@
 Defining beam extracting PTransforms, and the supporting DoFn
 """
 import json
+from typing import Optional
 from apache_beam import DoFn, PTransform, Reshuffle, Map, ParDo
 
 from apache_beam.io.fileio import MatchFiles, ReadMatches
@@ -33,7 +34,7 @@ class ReadableFiles(PTransform):
     """
 
     def __init__(
-        self, match_files: str, compression_type: CompressionTypes | None = None
+        self, match_files: str, compression_type: Optional[CompressionTypes] = None
     ):
         """
         init
