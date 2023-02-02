@@ -72,8 +72,8 @@ class GCPModel:
         project_id: str,
         dataset_id: str,
         table_id: str,
-        table_schema: list[SchemaField],
-        additional_bq_parameters: Optional[dict] = {},
+        table_schema,
+        additional_bq_parameters=None,
     ):
         """
         __init__
@@ -98,9 +98,7 @@ class GCPModel:
         self.table_schema = {
             "fields": [record.to_api_repr() for record in table_schema]
         }
-        self.additional_bq_parameters = (
-            additional_bq_parameters if additional_bq_parameters == {} else None
-        )
+        self.additional_bq_parameters = additional_bq_parameters
         self.table_spec = bigquery.TableReference(
             projectId=self.project_id, datasetId=self.dataset_id, tableId=self.table_id
         )

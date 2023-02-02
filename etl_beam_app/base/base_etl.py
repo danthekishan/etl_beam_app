@@ -1,6 +1,6 @@
 from datetime import datetime
 import json
-from typing import Generic, Optional
+from typing import Dict, Generic, Optional
 from typing import TypeVar
 
 from pydantic import validator
@@ -44,7 +44,7 @@ class BaseET:
         data_model,
         error_model,
         source: str,
-        transform_class: Optional[BaseTransform] = None,
+        transform_class=None,
         extract_response=BaseExtractResponse,
     ):
         self.data_model = data_model
@@ -56,7 +56,7 @@ class BaseET:
         )
         self.extract_response = extract_response
 
-    def validate_data(self, data: dict) -> tuple[dict, dict]:
+    def validate_data(self, data: Dict):
         """
         Validating data using pydantic backend
 
@@ -88,7 +88,7 @@ class BaseET:
             ).dict()["error_model"]
         return output_data, output_error
 
-    def process_data(self, data: dict) -> tuple[dict, dict]:
+    def process_data(self, data: Dict):
         """
         Processing and transforming single data point
 

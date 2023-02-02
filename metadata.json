@@ -8,9 +8,9 @@
       "helpText": "File name of the source"
     },
     {
-      "name": "output_table",
-      "label": "BigQuery output table name.",
-      "helpText": "Name of the BigQuery output table name.",
+      "name": "output_file",
+      "label": "Output file name.",
+      "helpText": "Name of the data output file name.",
       "isOptional": true,
       "regexes": [
         "([^:]+:)?[^.]+[.].+"

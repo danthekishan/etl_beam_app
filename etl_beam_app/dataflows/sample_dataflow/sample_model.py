@@ -7,7 +7,7 @@ data model to store person data
  "favourite_numbers": []}
 """
 
-from typing import Optional
+from typing import List, Optional
 from etl_beam_app.base.base_model import (
     BaseDataModel,
     ChildDataModel,
@@ -28,7 +28,7 @@ class Person(BaseDataModel):
     first_name: str
     last_name: Optional[str]
     address: Optional[Address] = Field(flatten=True)
-    favourite_numbers: list[int]
+    favourite_numbers: List[int]
     filename: str
 
 
